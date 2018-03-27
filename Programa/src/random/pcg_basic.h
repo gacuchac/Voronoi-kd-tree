@@ -28,8 +28,7 @@
  * your project.
  */
 
-#ifndef PCG_BASIC_H_INCLUDED
-#define PCG_BASIC_H_INCLUDED 1
+#pragma once
 
 #include <inttypes.h>
 
@@ -67,4 +66,7 @@ uint32_t pcg32_random_r(pcg32_random_t* rng);
 uint32_t pcg32_boundedrand(uint32_t bound);
 uint32_t pcg32_boundedrand_r(pcg32_random_t* rng, uint32_t bound);
 
-#endif // PCG_BASIC_H_INCLUDED
+/** Generates a random double in the interval [0, bound] */
+double random_bounded_double(double bound);
+/** Sets an integer as random seed */
+void   random_seed(int seed);
