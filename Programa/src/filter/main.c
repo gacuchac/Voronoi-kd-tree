@@ -8,6 +8,7 @@
 #include "linkedlist.h"
 #include <math.h>
 
+
 int main(int argc, char** argv)
 {
 
@@ -68,7 +69,37 @@ int main(int argc, char** argv)
 	{
 		nuclei[i].X = random_bounded_double(img -> width);
 		nuclei[i].Y = random_bounded_double(img -> height);
+		nuclei[i].left = NULL;
+		nuclei[i].right = NULL;
+		printf("X: %f ; Y: %f\n",nuclei[i].X, nuclei[i].Y);
 	}
+
+	int medio = (int)nuclei_count/2;
+	Point medianaX = qselectX(nuclei, nuclei_count,medio);
+
+	// Creamos el arbol
+	// Agregamos los nodos menores que medianaX
+	Point *izquierda = malloc(medio*sizeof(Point));
+	int izq = 0;
+	int tamanio = medio;
+	if (nuclei_count%2 == 0)
+	{
+		tamanio--;
+	}
+	Point *derecha = malloc(tamanio*sizeof(Point));
+	int der = 0;
+
+	for (int i = 0; i < nuclei_count; i++) {
+		if (nuclei[i].X < medianaX.X) {
+			izquierda[izq] = nuclei[i];
+			izq++;
+		}
+		else if (nuclei[i].X > medianaX.X) {
+			derecha[der] = nuclei[i];
+			der++;
+		}
+	}
+	point_tree(&medianaX, izquierda, 0, medio);
 
 	/**************************************************************************/
 	/*                                  PASO 2                                */

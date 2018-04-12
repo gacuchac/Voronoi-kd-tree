@@ -20,7 +20,7 @@ void  list_destroy(List* list)
 	{
 		List* prev = list;
 		list = list -> next;
-		
+
 		free(prev);
 	}
 }

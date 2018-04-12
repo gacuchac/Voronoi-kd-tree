@@ -11,7 +11,7 @@ struct list
 {
 	int row;
 	int col;
- 	List* next;
+	List* next;
 };
 
 /** Agrega un nuevo elemento al principio de la lista */
