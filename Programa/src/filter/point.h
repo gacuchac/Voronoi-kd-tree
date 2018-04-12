@@ -8,6 +8,8 @@ struct point
 {
 	double X;
 	double Y;
+	int derecha;
+	int izquierda;
 	Point *right;
 	Point *left;
 };

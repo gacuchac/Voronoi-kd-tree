@@ -12,9 +12,10 @@ double euclidean_distance(Point a, double row, double col)
 /** Agrega un punto a la izquierda o la derecha*/
 void point_append(Point *root, Point point, int comparacion)
 {
-	printf("Comparacion: %i\n", comparacion);
-	printf("Root: %f ; %f\n", root->X, root->Y);
-	printf("Punto: %f ; %f\n", point.X, point.Y);
+	// printf("Comparacion: %i\n", comparacion);
+	// printf("Root: %f ; %f\n", root->X, root->Y);
+	// printf("Root izquierda ; derecha: %i;%i\n",root->izquierda,root->derecha);
+	// printf("Punto: %f ; %f\n", point.X, point.Y);
 	// Si comparacion == 0 comparamos eje X, si no, comparamos eje Y
 
 	// Comparamos eje Y
@@ -22,51 +23,55 @@ void point_append(Point *root, Point point, int comparacion)
 	{
 		// Vemos si es menor que root en eje Y
 		if (point.Y < root->Y) {
-			printf("Point es menor en Y\n");
+			// printf("Point es menor en Y\n");
 			// Si hay nodo a la izquierda
-			if (root->left != NULL) {
+			if (root->izquierda == 1) {
 				// Comparamos eje X con punto de la izquierda
-				printf("El nodo a la izquierda es: %f ; %f\n",root->left->X,root->left->Y);
+				// printf("El nodo a la izquierda es: %f ; %f\n",root->left->X,root->left->Y);
 				point_append(root->left, point, 0);
 			}
 			// No hay nodo a la izquierda
 			else
 			{
-				printf("No hay nodo a la izquierda\n");
+				// printf("No hay nodo a la izquierda\n");
 				// Le asignamos el punto como nodo
-				root->left = &point;
-				root->left->left = NULL;
-				root->left->right = NULL;
-				root->left->X = point.X;
-				root->left->Y = point.Y;
-				if (root->left != NULL) {
-					printf("Punto asignado\n");
-				}
+				Point *punto = malloc(sizeof(Point));
+				punto->derecha = 0;
+				punto->izquierda = 0;
+				punto->X = point.X;
+				punto->Y = point.Y;
+				root->left = punto;
+				root->izquierda = 1;
+				// if (root->izquierda == 1) {
+				// 	printf("Punto asignado es: %f ; %f\n", root->left->X, root->left->Y);
+				// }
 			}
 		}
 		// Es mayor que root en eje Y
 		else
 		{
-			printf("Point es mayor en Y\n");
+			// printf("Point es mayor en Y\n");
 			// Si hay nodo derecha
-			if (root->right !=NULL) {
-				printf("Hay nodo en la derecha\n");
+			if (root->derecha == 1) {
+				// printf("Hay nodo en la derecha\n");
 				// Comparamos con nodo derecha
 				point_append(root->right, point, 0);
 			}
 			// No hay nodo a la derecha
 			else
 			{
-				printf("No hay nodo en la derecha\n");
+				// printf("No hay nodo en la derecha\n");
 				// Le asignamos el punto como nodo
-				root->right = &point;
-				root->right->left = NULL;
-				root->right->right = NULL;
-				root->right->X = point.X;
-				root->right->Y = point.Y;
-				if (root->right != NULL) {
-					printf("Punto asignado\n");
-				}
+				Point *punto = malloc(sizeof(Point));
+				punto->derecha = 0;
+				punto->izquierda = 0;
+				punto->X = point.X;
+				punto->Y = point.Y;
+				root->right = punto;
+				root->derecha = 1;
+				// if (root->derecha == 1) {
+				// 	printf("Punto asignado es: %f ; %f\n", root->right->X, root->right->Y);
+				// }
 			}
 		}
 	}
@@ -76,51 +81,55 @@ void point_append(Point *root, Point point, int comparacion)
 	{
 		// Vemos si es menor que root en eje X
 		if (point.X < root->X) {
-			printf("Point es menor en X\n");
+			// printf("Point es menor en X\n");
 			// Si hay nodo a la izquierda
-			if (root->left != NULL) {
+			if (root->izquierda == 1) {
 				// Comparamos eje X con punto de la izquierda
-				printf("El nodo a la izquierda es: %f ; %f\n",root->left->X,root->left->Y);
+				// printf("El nodo a la izquierda es: %f ; %f\n",root->left->X,root->left->Y);
 				point_append(root->left, point, 1);
 			}
 			// No hay nodo a la izquierda
 			else
 			{
-				printf("No hay nodo a la izquierda\n");
+				// printf("No hay nodo a la izquierda\n");
 				// Le asignamos el punto como nodo
-				root->left = &point;
-				root->left->left = NULL;
-				root->left->right = NULL;
-				root->left->X = point.X;
-				root->left->Y = point.Y;
-				if (root->left != NULL) {
-					printf("Punto asignado\n");
-				}
+				Point *punto = malloc(sizeof(Point));
+				punto->derecha = 0;
+				punto->izquierda = 0;
+				punto->X = point.X;
+				punto->Y = point.Y;
+				root->left = punto;
+				root->izquierda = 1;
+				// if (root->izquierda == 1) {
+				// 	printf("Punto asignado es: %f ; %f\n", root->left->X, root->left->Y);
+				// }
 			}
 		}
 		// Es mayor que root en eje X
 		else
 		{
-			printf("Point es mayor en X\n");
+			// printf("Point es mayor en X\n");
 			// Si hay nodo derecha
-			if (root->right !=NULL) {
-				printf("Hay nodo en la derecha\n");
+			if (root->derecha == 1) {
+				// printf("Hay nodo en la derecha\n");
 				// Comparamos con nodo derecha
 				point_append(root->right, point, 1);
 			}
 			// No hay nodo a la derecha
 			else
 			{
-				printf("No hay nodo en la derecha\n");
+				// printf("No hay nodo en la derecha\n");
 				// Le asignamos el punto como nodo
-				root->right = &point;
-				root->right->left = NULL;
-				root->right->right = NULL;
-				root->right->X = point.X;
-				root->right->Y = point.Y;
-				if (root->right != NULL) {
-					printf("Punto asignado\n");
-				}
+				Point *punto = malloc(sizeof(Point));
+				punto->derecha = 0;
+				punto->izquierda = 0;
+				punto->X = point.X;
+				punto->Y = point.Y;
+				root->right = punto;
+				root->derecha = 1;
+				// if (root->derecha == 1) {
+				// 	printf("Punto asignado es: %f ; %f\n", root->right->X, root->right->Y);
+				// }
 			}
 		}
 	}
@@ -173,21 +182,25 @@ Point qselectY(Point *v, int len, int k)
 void point_print(Point *nuclei, int nuclei_count)
 {
 	for (int i = 0; i < nuclei_count; i++) {
-		printf("Nucleo X: %f ; Y:%f\n",nuclei[i].X,nuclei[i].Y);
+		// printf("Nucleo X: %f ; Y:%f\n",nuclei[i].X,nuclei[i].Y);
 	}
 }
 /** Arma el arbol de puntos a partir de un root*/
 void point_tree(Point *root, Point* nuclei, int comparacion, int nuclei_count)
 {
-	printf("nuclei_count: %i\n", nuclei_count);
+	if (nuclei_count == 0) {
+		return;
+	}
+	// printf("nuclei_count: %i\n", nuclei_count);
 	int medio = (int) nuclei_count/2;
 	int tamanio = nuclei_count-medio-1;
 	// printf("medio: %i\n", medio);
-	printf("Arreglo nuclei\n");
+	// printf("Arreglo nuclei\n");
 	point_print(nuclei, nuclei_count);
 	// Si comparacion == 0, tomamos medianaX, si no, medianaY
 	if (comparacion) {
 		if (nuclei_count == 1) {
+			// printf("Queda un nucleo\n");
 			point_append(root, nuclei[0], 0);
 		}
 
@@ -195,15 +208,11 @@ void point_tree(Point *root, Point* nuclei, int comparacion, int nuclei_count)
 		else
 		{
 			Point medianaY = qselectY(nuclei, nuclei_count, medio);
-			printf("MedianaY X: %f ; Y: %f\n",medianaY.X, medianaY.Y);
-			point_append(root, medianaY, 1);
+			// printf("MedianaY X: %f ; Y: %f\n",medianaY.X, medianaY.Y);
+			point_append(root, medianaY, 0);
 			Point *izquierda = malloc(medio*sizeof(Point));
 			int izq = 0;
-			int tamanio = medio;
-			if (nuclei_count%2 == 0)
-			{
-				tamanio--;
-			}
+			int tamanio = nuclei_count-medio-1;
 			Point *derecha = malloc(tamanio*sizeof(Point));
 			int der = 0;
 
@@ -219,9 +228,12 @@ void point_tree(Point *root, Point* nuclei, int comparacion, int nuclei_count)
 				}
 			}
 
-			for (int i = 0; i < medio; i++) {
-				printf("Izquierda: %f; %f\n",izquierda[i].X,izquierda[i].Y);
-			}
+			// for (int i = 0; i < medio; i++) {
+			// 	printf("Izquierda: %f; %f\n",izquierda[i].X,izquierda[i].Y);
+			// }
+			// for (int i = 0; i < tamanio; i++) {
+			// 	printf("Derecha: %f; %f\n",derecha[i].X,derecha[i].Y);
+			// }
 			// agregamos la proxima medianaX  recursivamente
 			point_tree(root, izquierda, 0, medio);
 			point_tree(root, derecha, 0, tamanio);
@@ -238,15 +250,12 @@ void point_tree(Point *root, Point* nuclei, int comparacion, int nuclei_count)
 		else
 		{
 			Point medianaX = qselectX(nuclei, nuclei_count, medio);
-			point_append(root, medianaX, comparacion);
+			point_append(root, medianaX, 0);
 			// Si quedan puntos
 			Point *izquierda = malloc(medio*sizeof(Point));
 			int izq = 0;
-			int tamanio = medio;
-			if (nuclei_count%2 == 0)
-			{
-				tamanio--;
-			}
+			int tamanio = nuclei_count-medio-1;
+
 			Point *derecha = malloc(tamanio*sizeof(Point));
 			int der = 0;
 
@@ -261,9 +270,9 @@ void point_tree(Point *root, Point* nuclei, int comparacion, int nuclei_count)
 					der++;
 				}
 			}
-			for (int i = 0; i < medio; i++) {
-				printf("Izquierda: %f; %f\n",izquierda[i].X,izquierda[i].Y);
-			}
+			// for (int i = 0; i < medio; i++) {
+			// 	printf("Izquierda: %f; %f\n",izquierda[i].X,izquierda[i].Y);
+			// }
 			// agregamos las medianaX y medianaY recursivamente
 			point_tree(root, izquierda, 0, medio);
 			point_tree(root, derecha, 0, tamanio);

@@ -7,7 +7,7 @@
 #include "point.h"
 #include "linkedlist.h"
 #include <math.h>
-
+#include <time.h>
 
 int main(int argc, char** argv)
 {
@@ -69,11 +69,11 @@ int main(int argc, char** argv)
 	{
 		nuclei[i].X = random_bounded_double(img -> width);
 		nuclei[i].Y = random_bounded_double(img -> height);
-		nuclei[i].left = NULL;
-		nuclei[i].right = NULL;
-		printf("X: %f ; Y: %f\n",nuclei[i].X, nuclei[i].Y);
+		nuclei[i].derecha = 0;
+		nuclei[i].izquierda = 0;
+		// printf("X: %f ; Y: %f\n",nuclei[i].X, nuclei[i].Y);
 	}
-
+	clock_t t = clock();
 	int medio = (int)nuclei_count/2;
 	Point medianaX = qselectX(nuclei, nuclei_count,medio);
 
@@ -99,8 +99,10 @@ int main(int argc, char** argv)
 			der++;
 		}
 	}
-	point_tree(&medianaX, izquierda, 0, medio);
-
+	point_tree(&medianaX, izquierda, 1, medio);
+	point_tree(&medianaX, derecha, 1, tamanio);
+	t = clock() - t;
+	printf("Se demoro %f segundos en construir el arbol\n",((float)t)/CLOCKS_PER_SEC);
 	/**************************************************************************/
 	/*                                  PASO 2                                */
 	/*                                                                        */
