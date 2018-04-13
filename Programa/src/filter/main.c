@@ -40,22 +40,22 @@ int main(int argc, char** argv)
 
 	/* Lee el archivo de la imagen */
 	Image* img = img_png_read_from_file(argv[1]);
-	/* Abre la ventana de las dimensiones especificadas */
-	watcher_open(img -> height, img -> width);
-
-	/* Pinta la imagen en la ventana. Para cada pixel: */
-	for(int row = 0; row < img -> height; row++)
-	{
-		for(int col = 0; col < img -> width; col++)
-		{
-			/* Toma el color del pixel */
-			Color c = img -> pixels[row][col];
-			/* Le dice a la ventana que se ponga ese color */
-			watcher_set_color(c.R, c.G,  c.B);
-			/* Y que pinte específicamente ese pixel */
-			watcher_paint_pixel(row, col);
-		}
-	}
+	// /* Abre la ventana de las dimensiones especificadas */
+	// watcher_open(img -> height, img -> width);
+	//
+	// /* Pinta la imagen en la ventana. Para cada pixel: */
+	// for(int row = 0; row < img -> height; row++)
+	// {
+	// 	for(int col = 0; col < img -> width; col++)
+	// 	{
+	// 		/* Toma el color del pixel */
+	// 		Color c = img -> pixels[row][col];
+	// 		/* Le dice a la ventana que se ponga ese color */
+	// 		watcher_set_color(c.R, c.G,  c.B);
+	// 		/* Y que pinte específicamente ese pixel */
+	// 		watcher_paint_pixel(row, col);
+	// 	}
+	// }
 
 	/**************************************************************************/
 	/*                                  PASO 1                                */
@@ -71,7 +71,7 @@ int main(int argc, char** argv)
 		nuclei[i].Y = random_bounded_double(img -> height);
 		nuclei[i].derecha = 0;
 		nuclei[i].izquierda = 0;
-		// printf("X: %f ; Y: %f\n",nuclei[i].X, nuclei[i].Y);
+		printf("X: %f ; Y: %f\n",nuclei[i].X, nuclei[i].Y);
 	}
 	clock_t t = clock();
 	int medio = (int)nuclei_count/2;
@@ -113,31 +113,35 @@ int main(int argc, char** argv)
 
 	/* Los elementos de la celda de voronoi asociada a cada núcleo */
 	/* Es un arreglo de listas */
-	List** cells = calloc(nuclei_count, sizeof(List*));
+	// List** cells = calloc(nuclei_count, sizeof(List*));
 
+  // Arreglo de roots de listas
+	// List * lista = calloc(nuclei_count, sizeof(List));
 	/* Para cada píxel de la imagen */
 	for(int row = 0; row < img -> height; row++)
 	{
 		for(int col = 0; col < img -> width; col++)
 		{
-			/* Identifica cual es el núcleo más cercano al pixel */
-			double closest_distance = INFINITY;
-			int closest_point;
-
-			/* Se revisa la distancia del pixel con cada núcleo */
-			for(int i = 0; i < nuclei_count; i++)
-			{
-				/* Guardando siempre el más cercano */
-				double distance = euclidean_distance(nuclei[i], row, col);
-				if (distance < closest_distance)
-				{
-					closest_distance = distance;
-					closest_point = i;
-				}
-			}
-
-			/* Se asocia el píxel a su núcleo más cercano */
-			cells[closest_point] = list_prepend(cells[closest_point], row, col);
+		// 	/* Identifica cual es el núcleo más cercano al pixel */
+		// 	double closest_distance = INFINITY;
+		// 	int closest_point;
+		//
+		// 	/* Se revisa la distancia del pixel con cada núcleo */
+		// 	for(int i = 0; i < nuclei_count; i++)
+		// 	{
+		// 		/* Guardando siempre el más cercano */
+		// 		double distance = euclidean_distance(nuclei[i], row, col);
+		// 		if (distance < closest_distance)
+		// 		{
+		// 			closest_distance = distance;
+		// 			closest_point = i;
+		// 		}
+		// 	}
+		//
+		// 	/* Se asocia el píxel a su núcleo más cercano */
+		// 	cells[closest_point] = list_prepend(cells[closest_point], row, col);
+		Point* vecino = nearest_neighbour(&medianaX, row, col, 0,1,&medianaX,INFINITY);
+		printf("Vecino X: %f Y: %f\n", vecino->X, vecino->Y);
 		}
 	}
 
@@ -147,62 +151,62 @@ int main(int argc, char** argv)
 	/* Pintar el diagrama de voronoi de acuerdo a los pixeles de una celda    */
 	/**************************************************************************/
 
-	/* Para cada núcleo */
-	for(int i = 0; i < nuclei_count; i++)
-	{
-		/* Nota: los colores se dividen en componentes R,G y B */
-		double R = 0;
-		double G = 0;
-		double B = 0;
-		int count = 0;
-
-		/* c es el promedio de los colores de cada los pı́xel dentro de su celda */
-		for(List* curr = cells[i]; curr; curr = curr -> next)
-		{
-			Color c = img -> pixels[curr -> row][curr -> col];
-
-			R += c.R;
-			G += c.G;
-			B += c.B;
-
-			count++;
-		}
-
-		R /= count;
-		G /= count;
-		B /= count;
-
-		/* Pintar de color c todos los píxeles asociados al núcleo */
-		watcher_set_color(R, G, B);
-
-		/* Por cada píxel dentro de la celda correspondiente al i-ésimo núcleo */
-		for(List* curr = cells[i]; curr; curr = curr -> next)
-		{
-			watcher_paint_pixel(curr -> row, curr -> col);
-		}
-	}
-
-	/* Imprime la ventana en una imagen para se la muestres a tu mamá */
-	watcher_snapshot("mira_mama_que_lindo_mi_programa.png");
-
-	/* Detiene el programa por 5 segundos para que contemples el resultado */
-	sleep(5);
+	// /* Para cada núcleo */
+	// for(int i = 0; i < nuclei_count; i++)
+	// {
+	// 	/* Nota: los colores se dividen en componentes R,G y B */
+	// 	double R = 0;
+	// 	double G = 0;
+	// 	double B = 0;
+	// 	int count = 0;
+	//
+	// 	/* c es el promedio de los colores de cada los pı́xel dentro de su celda */
+	// 	for(List* curr = cells[i]; curr; curr = curr -> next)
+	// 	{
+	// 		Color c = img -> pixels[curr -> row][curr -> col];
+	//
+	// 		R += c.R;
+	// 		G += c.G;
+	// 		B += c.B;
+	//
+	// 		count++;
+	// 	}
+	//
+	// 	R /= count;
+	// 	G /= count;
+	// 	B /= count;
+	//
+	// 	/* Pintar de color c todos los píxeles asociados al núcleo */
+	// 	watcher_set_color(R, G, B);
+	//
+	// 	/* Por cada píxel dentro de la celda correspondiente al i-ésimo núcleo */
+	// 	for(List* curr = cells[i]; curr; curr = curr -> next)
+	// 	{
+	// 		watcher_paint_pixel(curr -> row, curr -> col);
+	// 	}
+	// }
+	//
+	// /* Imprime la ventana en una imagen para se la muestres a tu mamá */
+	// watcher_snapshot("mira_mama_que_lindo_mi_programa.png");
+	//
+	// /* Detiene el programa por 5 segundos para que contemples el resultado */
+	// sleep(5);
 
 	/**************************************************************************/
 	/*                          Liberación de Memoria                         */
 	/**************************************************************************/
-
-	for(int i = 0; i < nuclei_count; i++)
-	{
-		list_destroy(cells[i]);
-	}
-	free(cells);
-	free(nuclei);
-	img_png_destroy(img);
-
-	/* OJO: Lo que sea que haya en la ventana cuando llames esta función será */
-	/* lo que se considere para tu corrección */
-	watcher_close();
+	//
+	// for(int i = 0; i < nuclei_count; i++)
+	// {
+	// 	list_destroy(cells[i]);
+	// }
+	// free(cells);
+	// free(nuclei);
+	// img_png_destroy(img);
+	//
+	// /* OJO: Lo que sea que haya en la ventana cuando llames esta función será */
+	// /* lo que se considere para tu corrección */
+	// watcher_close();
 
 	/* OJO: Si no retornas 0 en el main, se considera que tu programa falló */
 	return 0;

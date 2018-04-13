@@ -4,36 +4,27 @@
 #include <stdlib.h>
 
 /** Obtiene la distancia entre un punto y un píxel de la imagen */
-double euclidean_distance(Point a, double row, double col)
+double euclidean_distance(Point *a, double row, double col)
 {
-	return sqrt(pow(a.X - col,2) + pow(a.Y - row, 2));
+	return sqrt(pow(a->X - col,2) + pow(a->Y - row, 2));
 }
-
 /** Agrega un punto a la izquierda o la derecha*/
 void point_append(Point *root, Point point, int comparacion)
 {
-	// printf("Comparacion: %i\n", comparacion);
-	// printf("Root: %f ; %f\n", root->X, root->Y);
-	// printf("Root izquierda ; derecha: %i;%i\n",root->izquierda,root->derecha);
-	// printf("Punto: %f ; %f\n", point.X, point.Y);
 	// Si comparacion == 0 comparamos eje X, si no, comparamos eje Y
-
 	// Comparamos eje Y
 	if(comparacion == 1)
 	{
 		// Vemos si es menor que root en eje Y
 		if (point.Y < root->Y) {
-			// printf("Point es menor en Y\n");
 			// Si hay nodo a la izquierda
 			if (root->izquierda == 1) {
 				// Comparamos eje X con punto de la izquierda
-				// printf("El nodo a la izquierda es: %f ; %f\n",root->left->X,root->left->Y);
 				point_append(root->left, point, 0);
 			}
 			// No hay nodo a la izquierda
 			else
 			{
-				// printf("No hay nodo a la izquierda\n");
 				// Le asignamos el punto como nodo
 				Point *punto = malloc(sizeof(Point));
 				punto->derecha = 0;
@@ -42,25 +33,19 @@ void point_append(Point *root, Point point, int comparacion)
 				punto->Y = point.Y;
 				root->left = punto;
 				root->izquierda = 1;
-				// if (root->izquierda == 1) {
-				// 	printf("Punto asignado es: %f ; %f\n", root->left->X, root->left->Y);
-				// }
 			}
 		}
 		// Es mayor que root en eje Y
 		else
 		{
-			// printf("Point es mayor en Y\n");
 			// Si hay nodo derecha
 			if (root->derecha == 1) {
-				// printf("Hay nodo en la derecha\n");
 				// Comparamos con nodo derecha
 				point_append(root->right, point, 0);
 			}
 			// No hay nodo a la derecha
 			else
 			{
-				// printf("No hay nodo en la derecha\n");
 				// Le asignamos el punto como nodo
 				Point *punto = malloc(sizeof(Point));
 				punto->derecha = 0;
@@ -69,9 +54,6 @@ void point_append(Point *root, Point point, int comparacion)
 				punto->Y = point.Y;
 				root->right = punto;
 				root->derecha = 1;
-				// if (root->derecha == 1) {
-				// 	printf("Punto asignado es: %f ; %f\n", root->right->X, root->right->Y);
-				// }
 			}
 		}
 	}
@@ -81,17 +63,14 @@ void point_append(Point *root, Point point, int comparacion)
 	{
 		// Vemos si es menor que root en eje X
 		if (point.X < root->X) {
-			// printf("Point es menor en X\n");
 			// Si hay nodo a la izquierda
 			if (root->izquierda == 1) {
 				// Comparamos eje X con punto de la izquierda
-				// printf("El nodo a la izquierda es: %f ; %f\n",root->left->X,root->left->Y);
 				point_append(root->left, point, 1);
 			}
 			// No hay nodo a la izquierda
 			else
 			{
-				// printf("No hay nodo a la izquierda\n");
 				// Le asignamos el punto como nodo
 				Point *punto = malloc(sizeof(Point));
 				punto->derecha = 0;
@@ -100,25 +79,19 @@ void point_append(Point *root, Point point, int comparacion)
 				punto->Y = point.Y;
 				root->left = punto;
 				root->izquierda = 1;
-				// if (root->izquierda == 1) {
-				// 	printf("Punto asignado es: %f ; %f\n", root->left->X, root->left->Y);
-				// }
 			}
 		}
 		// Es mayor que root en eje X
 		else
 		{
-			// printf("Point es mayor en X\n");
 			// Si hay nodo derecha
 			if (root->derecha == 1) {
-				// printf("Hay nodo en la derecha\n");
 				// Comparamos con nodo derecha
 				point_append(root->right, point, 1);
 			}
 			// No hay nodo a la derecha
 			else
 			{
-				// printf("No hay nodo en la derecha\n");
 				// Le asignamos el punto como nodo
 				Point *punto = malloc(sizeof(Point));
 				punto->derecha = 0;
@@ -127,14 +100,10 @@ void point_append(Point *root, Point point, int comparacion)
 				punto->Y = point.Y;
 				root->right = punto;
 				root->derecha = 1;
-				// if (root->derecha == 1) {
-				// 	printf("Punto asignado es: %f ; %f\n", root->right->X, root->right->Y);
-				// }
 			}
 		}
 	}
 }
-
 // Adaptado de https://wikicoding.org/wiki/c/Quickselect/
 /* Intercambia puntos del arreglo**/
 void swap(int num1, int num2, Point* nucleos) {
@@ -142,7 +111,6 @@ void swap(int num1, int num2, Point* nucleos) {
    nucleos[num1] = nucleos[num2];
    nucleos[num2] = temp;
 }
-
 /* Devuelve punto en que hay k elementos menores que él en el eje X**/
 Point qselectX(Point *v, int len, int k)
 {
@@ -160,7 +128,6 @@ Point qselectX(Point *v, int len, int k)
 			:st > k	? qselectX(v, st, k)
 				: qselectX(v + st, len - st, k - st);
 }
-
 /* Devuelve punto en que hay k elementos menores que él en el eje Y**/
 Point qselectY(Point *v, int len, int k)
 {
@@ -178,12 +145,11 @@ Point qselectY(Point *v, int len, int k)
 			:st > k	? qselectY(v, st, k)
 				: qselectY(v + st, len - st, k - st);
 }
-
 void point_print(Point *nuclei, int nuclei_count)
 {
-	for (int i = 0; i < nuclei_count; i++) {
-		// printf("Nucleo X: %f ; Y:%f\n",nuclei[i].X,nuclei[i].Y);
-	}
+	// for (int i = 0; i < nuclei_count; i++) {
+	//  printf("Nucleo X: %f ; Y:%f\n",nuclei[i].X,nuclei[i].Y);
+	// }
 }
 /** Arma el arbol de puntos a partir de un root*/
 void point_tree(Point *root, Point* nuclei, int comparacion, int nuclei_count)
@@ -228,12 +194,6 @@ void point_tree(Point *root, Point* nuclei, int comparacion, int nuclei_count)
 				}
 			}
 
-			// for (int i = 0; i < medio; i++) {
-			// 	printf("Izquierda: %f; %f\n",izquierda[i].X,izquierda[i].Y);
-			// }
-			// for (int i = 0; i < tamanio; i++) {
-			// 	printf("Derecha: %f; %f\n",derecha[i].X,derecha[i].Y);
-			// }
 			// agregamos la proxima medianaX  recursivamente
 			point_tree(root, izquierda, 0, medio);
 			point_tree(root, derecha, 0, tamanio);
@@ -278,4 +238,231 @@ void point_tree(Point *root, Point* nuclei, int comparacion, int nuclei_count)
 			point_tree(root, derecha, 0, tamanio);
 		}
 	}
+}
+/** Encuentra vecino mas cercano*/
+Point* nearest_neighbour(Point *root, double row, double column, int comparacion, int primera_vez, Point* vecino, double distancia)
+{
+	if (primera_vez == 1) {
+		vecino = malloc(sizeof(Point));
+		distancia = INFINITY;
+	}
+	// Column es posicion X, Row es Y
+	distancia = euclidean_distance(root, row, column);
+	// printf("Distancia entre %f;%f y %f;%f es: %f\n",root->X, root->Y, column, row, distancia );
+	// Si comparacion == 0 comparamos eje X, si no, comparamos eje Y
+	// Comparamos eje Y
+	if(comparacion == 1)
+	{
+		// Vemos si es menor que root en eje Y
+		if ( row < root->Y) {
+			// Si hay nodo a la izquierda
+			if (root->izquierda == 1) {
+				// Comparamos eje X con punto de la izquierda
+				nearest_neighbour(root->left, row, column, 0, 0, vecino, distancia);
+
+				// Comparamos la distancia menor con el nodo actual
+				double temp = euclidean_distance(root, row, column);
+				if (temp < distancia) {
+					distancia = temp;
+					vecino = root;
+					// printf("Distancia entre %f;%f y %f;%f es: %f\n",root->X, root->Y, column, row, distancia );
+				}
+
+				// Calculamos la distancia del nodo actual al de la derecha si existe
+				if (root->derecha == 1) {
+					double dist = euclidean_distance(root, root->right->Y, root->right->X);
+
+					// Si la distancia entre el nodo actual con el de la derecha es menor
+					// que la del nodo actual con el pixel, buscamos nearest_neighbour
+					// en el sub arbol de la derecha
+					if (dist < distancia) {
+						nearest_neighbour(root->right, row, column, 0,0,vecino,distancia);
+					}
+				}
+			}
+			// No hay nodo a la izquierda
+			else
+			{
+				// Calculamos la distacia a la hoja
+				double temp = euclidean_distance(root, row, column);
+				if (temp < distancia) {
+					distancia = temp;
+					vecino = root;
+					// printf("Distancia entre %f;%f y %f;%f es: %f\n",root->X, root->Y, column, row, distancia );
+				}
+
+				// Calculamos la distancia del nodo actual al de la derecha si existe
+				if (root->derecha == 1) {
+					double dist = euclidean_distance(root, root->right->Y, root->right->X);
+
+					// Si la distancia entre el nodo actual con el de la derecha es menor
+					// que la del nodo actual con el pixel, buscamos nearest_neighbour
+					// en el sub arbol de la derecha
+					if (dist < distancia) {
+						nearest_neighbour(root->right, row, column, 0,0,vecino,distancia);
+					}
+				}
+			}
+		}
+		// Es mayor que root en eje Y
+		else
+		{
+			// Si hay nodo derecha
+			if (root->derecha == 1) {
+				// Comparamos con nodo derecha
+				nearest_neighbour(root->right, row, column, 0, 0,vecino,distancia);
+				// Comparamos la distancia menor con el nodo actual
+				double temp = euclidean_distance(root, row, column);
+				if (temp < distancia) {
+					distancia = temp;
+					vecino = root;
+					// printf("Distancia entre %f;%f y %f;%f es: %f\n",root->X, root->Y, column, row, distancia );
+				}
+
+				// Calculamos la distancia del nodo actual al de la izquierda si existe
+				if (root->izquierda == 1) {
+					double dist = euclidean_distance(root, root->left->Y, root->left->X);
+
+					// Si la distancia entre el nodo actual con el de la izquierda es menor
+					// que la del nodo actual con el pixel, buscamos nearest_neighbour
+					// en el sub arbol de la izquierda
+					if (dist < distancia) {
+						nearest_neighbour(root->left, row, column, 0,0,vecino,distancia);
+					}
+				}
+			}
+			// No hay nodo a la derecha
+			else
+			{
+				// Calculamos la distacia a la hoja
+				double temp = euclidean_distance(root, row, column);
+				if (temp < distancia) {
+					distancia = temp;
+					vecino = root;
+					// printf("Distancia entre %f;%f y %f;%f es: %f\n",root->X, root->Y, column, row, distancia );
+				}
+
+				// Calculamos la distancia del nodo actual al de la izquierda si existe
+				if (root->izquierda == 1) {
+					double dist = euclidean_distance(root, root->left->Y, root->left->X);
+
+					// Si la distancia entre el nodo actual con el de la derecha es menor
+					// que la del nodo actual con el pixel, buscamos nearest_neighbour
+					// en el sub arbol de la derecha
+					if (dist < distancia) {
+						nearest_neighbour(root->left, row, column, 0,0,vecino,distancia);
+					}
+				}
+			}
+		}
+	}
+
+	// Comparamos eje X
+	else
+	{
+		// Vemos si es menor que root en eje Y
+		if ( row < root->Y) {
+			// Si hay nodo a la izquierda
+			if (root->izquierda == 1) {
+				// Comparamos eje X con punto de la izquierda
+				nearest_neighbour(root->left, row, column, 1,0,vecino,distancia);
+
+				// Comparamos la distancia menor con el nodo actual
+				double temp = euclidean_distance(root, row, column);
+				if (temp < distancia) {
+					distancia = temp;
+					vecino = root;
+					// printf("Distancia entre %f;%f y %f;%f es: %f\n",root->X, root->Y, column, row, distancia );
+				}
+
+				// Calculamos la distancia del nodo actual al de la derecha si existe
+				if (root->derecha == 1) {
+					double dist = euclidean_distance(root, root->right->Y, root->right->X);
+
+					// Si la distancia entre el nodo actual con el de la derecha es menor
+					// que la del nodo actual con el pixel, buscamos nearest_neighbour
+					// en el sub arbol de la derecha
+					if (dist < distancia) {
+						nearest_neighbour(root->right, row, column, 1,0,vecino,distancia);
+					}
+				}
+			}
+			// No hay nodo a la izquierda
+			else
+			{
+				// Calculamos la distacia a la hoja
+				double temp = euclidean_distance(root, row, column);
+				if (temp < distancia) {
+					distancia = temp;
+					vecino = root;
+					// printf("Distancia entre %f;%f y %f;%f es: %f\n",root->X, root->Y, column, row, distancia );
+				}
+
+				// Calculamos la distancia del nodo actual al de la derecha si existe
+				if (root->derecha == 1) {
+					double dist = euclidean_distance(root, root->right->Y, root->right->X);
+
+					// Si la distancia entre el nodo actual con el de la derecha es menor
+					// que la del nodo actual con el pixel, buscamos nearest_neighbour
+					// en el sub arbol de la derecha
+					if (dist < distancia) {
+						nearest_neighbour(root->right, row, column, 1,0,vecino,distancia);
+					}
+				}
+			}
+		}
+		// Es mayor que root en eje Y
+		else
+		{
+			// Si hay nodo derecha
+			if (root->derecha == 1) {
+				// Comparamos con nodo derecha
+				nearest_neighbour(root->right, row, column, 1,0,vecino,distancia);
+				// Comparamos la distancia menor con el nodo actual
+				double temp = euclidean_distance(root, row, column);
+				if (temp < distancia) {
+					distancia = temp;
+					vecino = root;
+					// printf("Distancia entre %f;%f y %f;%f es: %f\n",root->X, root->Y, column, row, distancia );
+				}
+
+				// Calculamos la distancia del nodo actual al de la izquierda si existe
+				if (root->izquierda == 1) {
+					double dist = euclidean_distance(root, root->left->Y, root->left->X);
+
+					// Si la distancia entre el nodo actual con el de la izquierda es menor
+					// que la del nodo actual con el pixel, buscamos nearest_neighbour
+					// en el sub arbol de la izquierda
+					if (dist < distancia) {
+						nearest_neighbour(root->left, row, column, 1,0,vecino,distancia);
+					}
+				}
+			}
+			// No hay nodo a la derecha
+			else
+			{
+				// Calculamos la distacia a la hoja
+				double temp = euclidean_distance(root, row, column);
+				if (temp < distancia) {
+					distancia = temp;
+					vecino = root;
+					// printf("Distancia entre %f;%f y %f;%f es: %f\n",root->X, root->Y, column, row, distancia );
+				}
+
+				// Calculamos la distancia del nodo actual al de la izquierda si existe
+				if (root->izquierda == 1) {
+					double dist = euclidean_distance(root, root->left->Y, root->left->X);
+
+					// Si la distancia entre el nodo actual con el de la derecha es menor
+					// que la del nodo actual con el pixel, buscamos nearest_neighbour
+					// en el sub arbol de la derecha
+					if (dist < distancia) {
+						nearest_neighbour(root->left, row, column, 1,0,vecino,distancia);
+					}
+				}
+			}
+		}
+	}
+	// printf("Vecino es X: %f; Y: %f\n",vecino->X,vecino->Y);
+	return vecino;
 }
