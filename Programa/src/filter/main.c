@@ -113,34 +113,34 @@ int main(int argc, char** argv)
 
 	/* Los elementos de la celda de voronoi asociada a cada núcleo */
 	/* Es un arreglo de listas */
-	// List** cells = calloc(nuclei_count, sizeof(List*));
+	List** cells = calloc(nuclei_count, sizeof(List*));
 
   // Arreglo de roots de listas
 	// List * lista = calloc(nuclei_count, sizeof(List));
 	/* Para cada píxel de la imagen */
+	Point *root = malloc(sizeof(Point));
 	for(int row = 0; row < img -> height; row++)
 	{
 		for(int col = 0; col < img -> width; col++)
 		{
-		// 	/* Identifica cual es el núcleo más cercano al pixel */
-		// 	double closest_distance = INFINITY;
-		// 	int closest_point;
-		//
-		// 	/* Se revisa la distancia del pixel con cada núcleo */
-		// 	for(int i = 0; i < nuclei_count; i++)
-		// 	{
-		// 		/* Guardando siempre el más cercano */
-		// 		double distance = euclidean_distance(nuclei[i], row, col);
-		// 		if (distance < closest_distance)
-		// 		{
-		// 			closest_distance = distance;
-		// 			closest_point = i;
-		// 		}
-		// 	}
+			/* Identifica cual es el núcleo más cercano al pixel */
+			double closest_distance = INFINITY;
+			int closest_point;
+
+			/* Se revisa la distancia del pixel con cada núcleo */
+			for(int i = 0; i < nuclei_count; i++)
+			{
+				/* Guardando siempre el más cercano */
+				double distance = euclidean_distance(&nuclei[i], row, col);
+				if (distance < closest_distance)
+				{
+					closest_distance = distance;
+					closest_point = i;
+				}
+			}
 		//
 		// 	/* Se asocia el píxel a su núcleo más cercano */
-		// 	cells[closest_point] = list_prepend(cells[closest_point], row, col);
-		Point *root = malloc(sizeof(Point));
+			cells[closest_point] = list_prepend(cells[closest_point], row, col);
 		root->derecha = medianaX.derecha;
 		root->izquierda = medianaX.izquierda;
 		root->left = medianaX.left;
@@ -148,9 +148,17 @@ int main(int argc, char** argv)
 		root->X = medianaX.X;
 		root->Y = medianaX.Y;
 		Point* vecino = nearest_neighbour(&medianaX, row, col, 0,1,root,INFINITY);
-		printf("Punto X: %i Y: %i\n",col,row);
-		printf("Vecino X: %f Y: %f\n", vecino->X, vecino->Y);
-		getchar();
+		if (nuclei[closest_point].X != vecino->X || nuclei[closest_point].Y != vecino->Y) {
+			printf("Error\n");
+			printf("Punto X: %i Y: %i\n",col,row);
+			printf("Vecino X: %f Y: %f\n", vecino->X, vecino->Y);
+			printf("Fuerza Bruta X: %f Y: %f\n", nuclei[closest_point].X, nuclei[closest_point].Y);
+			getchar();
+		}
+		// printf("Punto X: %i Y: %i\n",col,row);
+		// printf("Vecino X: %f Y: %f\n", vecino->X, vecino->Y);
+		// printf("Fuerza Bruta X: %f Y: %f\n", nuclei[closest_point].X, nuclei[closest_point].Y);
+		// getchar();
 		}
 	}
 
