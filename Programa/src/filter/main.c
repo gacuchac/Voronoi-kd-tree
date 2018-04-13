@@ -140,8 +140,17 @@ int main(int argc, char** argv)
 		//
 		// 	/* Se asocia el píxel a su núcleo más cercano */
 		// 	cells[closest_point] = list_prepend(cells[closest_point], row, col);
-		Point* vecino = nearest_neighbour(&medianaX, row, col, 0,1,&medianaX,INFINITY);
+		Point *root = malloc(sizeof(Point));
+		root->derecha = medianaX.derecha;
+		root->izquierda = medianaX.izquierda;
+		root->left = medianaX.left;
+		root->right = medianaX.right;
+		root->X = medianaX.X;
+		root->Y = medianaX.Y;
+		Point* vecino = nearest_neighbour(&medianaX, row, col, 0,1,root,INFINITY);
+		printf("Punto X: %i Y: %i\n",col,row);
 		printf("Vecino X: %f Y: %f\n", vecino->X, vecino->Y);
+		getchar();
 		}
 	}
 
