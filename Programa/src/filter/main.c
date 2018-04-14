@@ -76,7 +76,7 @@ int main(int argc, char** argv)
 	clock_t t = clock();
 	int medio = (int)nuclei_count/2;
 	Point medianaX = qselectX(nuclei, nuclei_count,medio);
-
+	printf("medianaX: %f ; %f\n",medianaX.X,medianaX.Y);
 	// Creamos el arbol
 	// Agregamos los nodos menores que medianaX
 	Point *izquierda = malloc(medio*sizeof(Point));
@@ -151,8 +151,8 @@ int main(int argc, char** argv)
 		if (nuclei[closest_point].X != vecino->X || nuclei[closest_point].Y != vecino->Y) {
 			printf("Error\n");
 			printf("Punto X: %i Y: %i\n",col,row);
-			printf("Vecino X: %f Y: %f\n", vecino->X, vecino->Y);
-			printf("Fuerza Bruta X: %f Y: %f\n", nuclei[closest_point].X, nuclei[closest_point].Y);
+			printf("Vecino X: %f Y: %f distancia: %f\n", vecino->X, vecino->Y,euclidean_distance(vecino,row,col));
+			printf("Fuerza Bruta X: %f Y: %f distancia: %f\n", nuclei[closest_point].X, nuclei[closest_point].Y,euclidean_distance(&nuclei[closest_point], row, col));
 			getchar();
 		}
 		// printf("Punto X: %i Y: %i\n",col,row);
