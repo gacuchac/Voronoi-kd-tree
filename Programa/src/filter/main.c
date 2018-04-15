@@ -101,6 +101,8 @@ int main(int argc, char** argv)
 	}
 	point_tree(&medianaX, izquierda, 1, medio);
 	point_tree(&medianaX, derecha, 1, tamanio);
+	free(izquierda);
+	free(derecha);
 	t = clock() - t;
 	printf("Se demoro %f segundos en construir el arbol\n",((float)t)/CLOCKS_PER_SEC);
 	/**************************************************************************/
@@ -116,7 +118,7 @@ int main(int argc, char** argv)
 	List** cells = calloc(nuclei_count, sizeof(List*));
 
 	/* Para cada píxel de la imagen */
-	Point *root = malloc(sizeof(Point));
+	// Point *root = malloc(sizeof(Point));
 	t = clock();
 	eucli = 0;
 	for(int row = 0; row < img -> height; row++)
@@ -141,12 +143,12 @@ int main(int argc, char** argv)
 		//
 		// // 	/* Se asocia el píxel a su núcleo más cercano */
 		// 	cells[closest_point] = list_prepend(cells[closest_point], row, col);
-			root->derecha = medianaX.derecha;
-			root->izquierda = medianaX.izquierda;
-			root->left = medianaX.left;
-			root->right = medianaX.right;
-			root->X = medianaX.X;
-			root->Y = medianaX.Y;
+			// root->derecha = medianaX.derecha;
+			// root->izquierda = medianaX.izquierda;
+			// root->left = medianaX.left;
+			// root->right = medianaX.right;
+			// root->X = medianaX.X;
+			// root->Y = medianaX.Y;
 			Point* vecino = nearest_root(&medianaX, row, col);
 			// if (vecino->X != nuclei[closest_point].X || vecino->Y != nuclei[closest_point].Y) {
 			// 	printf("ERROR\n");
@@ -155,8 +157,13 @@ int main(int argc, char** argv)
 			/* Se asocia el píxel a su núcleo más cercano */
 			// printf("pixel %i;%i asignado a posicion %i\n",col,row,vecino->posicion);
 			cells[vecino->posicion] = list_prepend(cells[vecino->posicion], row, col);
+			free(vecino);
 		}
 	}
+	destroy_tree(&medianaX,1);
+	// for (int i = 0; i < nuclei_count; i++) {
+	// 	free(&nuclei[i]);
+	// }
 	t = clock() - t;
 	printf("Se demoro %f segundos en asignar vecinos cercanos\n",((float)t)/CLOCKS_PER_SEC);
 	printf("euclidean_distance %i\n", euclidean());

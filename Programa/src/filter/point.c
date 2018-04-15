@@ -4,7 +4,7 @@
 #include <stdlib.h>
 
 // Variables globales
-double distancia = 0;
+double distancia;
 Point* vecino = NULL;
 
 /** Obtiene la distancia entre un punto y un píxel de la imagen */
@@ -31,13 +31,20 @@ void point_append(Point *root, Point point, int comparacion)
 			else
 			{
 				// Le asignamos el punto como nodo
-				Point *punto = malloc(sizeof(Point));
-				punto->derecha = 0;
-				punto->izquierda = 0;
-				punto->X = point.X;
-				punto->Y = point.Y;
-				punto->posicion = point.posicion;
-				root->left = punto;
+				root->left = malloc(sizeof(Point));
+				// punto->derecha = 0;
+				// punto->izquierda = 0;
+				// punto->X = point.X;
+				// punto->Y = point.Y;
+				// punto->posicion = point.posicion;
+				// root->left = punto;
+				// root->izquierda = 1;
+
+				root->left->derecha = 0;
+				root->left->izquierda = 0;
+				root->left->X = point.X;
+				root->left->Y = point.Y;
+				root->left->posicion = point.posicion;
 				root->izquierda = 1;
 			}
 		}
@@ -53,13 +60,20 @@ void point_append(Point *root, Point point, int comparacion)
 			else
 			{
 				// Le asignamos el punto como nodo
-				Point *punto = malloc(sizeof(Point));
-				punto->derecha = 0;
-				punto->izquierda = 0;
-				punto->X = point.X;
-				punto->Y = point.Y;
-				punto->posicion = point.posicion;
-				root->right = punto;
+				root->right = malloc(sizeof(Point));
+				// punto->derecha = 0;
+				// punto->izquierda = 0;
+				// punto->X = point.X;
+				// punto->Y = point.Y;
+				// punto->posicion = point.posicion;
+				// root->right = punto;
+				// root->derecha = 1;
+
+				root->right->derecha = 0;
+				root->right->izquierda = 0;
+				root->right->X = point.X;
+				root->right->Y = point.Y;
+				root->right->posicion = point.posicion;
 				root->derecha = 1;
 			}
 		}
@@ -79,13 +93,20 @@ void point_append(Point *root, Point point, int comparacion)
 			else
 			{
 				// Le asignamos el punto como nodo
-				Point *punto = malloc(sizeof(Point));
-				punto->derecha = 0;
-				punto->izquierda = 0;
-				punto->X = point.X;
-				punto->Y = point.Y;
-				punto->posicion = point.posicion;
-				root->left = punto;
+				root->left = malloc(sizeof(Point));
+				// punto->derecha = 0;
+				// punto->izquierda = 0;
+				// punto->X = point.X;
+				// punto->Y = point.Y;
+				// punto->posicion = point.posicion;
+				// root->left = punto;
+				// root->izquierda = 1;
+
+				root->left->derecha = 0;
+				root->left->izquierda = 0;
+				root->left->X = point.X;
+				root->left->Y = point.Y;
+				root->left->posicion = point.posicion;
 				root->izquierda = 1;
 			}
 		}
@@ -101,14 +122,19 @@ void point_append(Point *root, Point point, int comparacion)
 			else
 			{
 				// Le asignamos el punto como nodo
-				Point *punto = malloc(sizeof(Point));
-				punto->derecha = 0;
-				punto->izquierda = 0;
-				punto->X = point.X;
-				punto->Y = point.Y;
-				punto->posicion = point.posicion;
-				root->right = punto;
+				root->right = malloc(sizeof(Point));
+				// punto->derecha = 0;
+				// punto->izquierda = 0;
+				// punto->X = point.X;
+				// punto->Y = point.Y;
+				// punto->posicion = point.posicion;
+				root->right->derecha = 0;
+				root->right->izquierda = 0;
+				root->right->X = point.X;
+				root->right->Y = point.Y;
+				root->right->posicion = point.posicion;
 				root->derecha = 1;
+				// root->right = punto;
 			}
 		}
 	}
@@ -123,7 +149,7 @@ void swap(int num1, int num2, Point* nucleos) {
 /* Devuelve punto en que hay k elementos menores que él en el eje X**/
 Point qselectX(Point *v, int len, int k)
 {
-	int i, st;
+	int i = 0, st = 0;
 
 	for (st = i = 0; i < len - 1; i++) {
 		if (v[i].X > v[len-1].X) continue;
@@ -169,7 +195,7 @@ void point_tree(Point *root, Point* nuclei, int comparacion, int nuclei_count)
 	// printf("nuclei_count: %i\n", nuclei_count);
 	int medio = (int) nuclei_count/2;
 	// printf("medio: %i\n",medio);
-	int tamanio = nuclei_count-medio-1;
+
 	// printf("medio: %i\n", medio);
 	// printf("Arreglo nuclei\n");
 	// point_print(nuclei, nuclei_count);
@@ -208,6 +234,8 @@ void point_tree(Point *root, Point* nuclei, int comparacion, int nuclei_count)
 			// agregamos la proxima medianaX  recursivamente
 			point_tree(root, izquierda, 0, medio);
 			point_tree(root, derecha, 0, tamanio);
+			free(izquierda);
+			free(derecha);
 		}
 
 	}
@@ -249,6 +277,8 @@ void point_tree(Point *root, Point* nuclei, int comparacion, int nuclei_count)
 			// agregamos las medianaX y medianaY recursivamente
 			point_tree(root, izquierda, 0, medio);
 			point_tree(root, derecha, 0, tamanio);
+			free(izquierda);
+			free(derecha);
 		}
 	}
 }
@@ -526,4 +556,29 @@ Point* nearest_root(Point *root, double row, double column)
 int euclidean()
 {
 	return eucli;
+}
+/** Libera memoria de arbol*/
+void destroy_tree(Point *root, int primera_vez)
+{
+	if (primera_vez == 1) {
+		// Vemos si hay sub arboles
+		if (root->izquierda == 1) {
+			destroy_tree(root->left,0);
+		}
+		if (root->derecha == 1) {
+			destroy_tree(root->right,0);
+		}
+	}
+	else {
+		// Vemos si hay sub arboles
+		if (root->izquierda == 1) {
+			destroy_tree(root->left,0);
+		}
+		if (root->derecha == 1) {
+			destroy_tree(root->right,0);
+		}
+		printf("free de %f;%f\n",root->X,root->Y);
+		free(root);
+		printf("liberado %p\n",root);
+	}
 }

@@ -31,3 +31,5 @@ Point* nearest_root(Point *root, double row, double column);
 double nearest_node(Point *root, double row, double column, int comparacion);
 /** Retorna cuantas veces se llamo a euclidean_distance*/
 int euclidean();
+/** Libera memoria de arbol*/
+void destroy_tree(Point *root, int primera_vez);
