@@ -6,7 +6,6 @@
 // Variables globales
 double distancia = 0;
 Point* vecino = NULL;
-int eucli = 0;
 
 /** Obtiene la distancia entre un punto y un píxel de la imagen */
 double euclidean_distance(Point *a, double row, double col)

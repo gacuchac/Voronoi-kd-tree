@@ -2,7 +2,7 @@
 
 /** Representa un punto en 2D */
 typedef struct point Point;
-
+int eucli;
 /** Representa un punto en 2D */
 struct point
 {
