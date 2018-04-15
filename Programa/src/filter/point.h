@@ -12,6 +12,7 @@ struct point
 	int izquierda;
 	Point *right;
 	Point *left;
+	int posicion;
 };
 
 /** Obtiene la distancia entre un punto y un píxel de la imagen */
@@ -24,5 +25,9 @@ void point_tree(Point *root, Point* arreglo, int comparacion, int nuclei_count);
 Point qselectY(Point *v, int len, int k);
 /* Devuelve punto en que hay k elementos menores que él en el eje X**/
 Point qselectX(Point *v, int len, int k);
+/** Inicializa variables para nearest_node*/
+Point* nearest_root(Point *root, double row, double column);
 /** Encuentra vecino mas cercano*/
-Point* nearest_neighbour(Point *root, double row, double column, int comparacion, int primera_vez, Point* vecino, double distancia);
+double nearest_node(Point *root, double row, double column, int comparacion);
+/** Retorna cuantas veces se llamo a euclidean_distance*/
+int euclidean();
